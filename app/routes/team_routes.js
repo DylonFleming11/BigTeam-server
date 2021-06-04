@@ -60,6 +60,8 @@ router.get('/team/:id', requireToken, (req, res, next) => {
 router.patch('/team/:id', requireToken, (req, res, next) => {
   // IMPORTANT! We need to remove the owner, to protect the data.
   delete req.body.team.owner
+  // const teamId = req.params.id
+  // const teamData = req.body.team
   Team.findById(req.params.id)
     .then(handle404)
     .then(team => {

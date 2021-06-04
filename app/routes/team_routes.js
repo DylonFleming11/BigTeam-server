@@ -31,9 +31,9 @@ router.delete('/team/:id', requireToken, (req, res, next) => {
     .then(handle404)
     .then(team => {
       requireOwnership(req, team)
-    })
-    .then(events => {
-      Team.deleteOne()
+      // })
+      // .then(events => {
+      team.deleteOne()
     })
     .then(() => res.sendStatus(204))
     .catch(next)
@@ -66,10 +66,12 @@ router.patch('/team/:id', requireToken, (req, res, next) => {
     .then(handle404)
     .then(team => {
       requireOwnership(req, team)
-    })
-    .then(team => {
+      // })
+      // .then(team => {
       return team.updateOne(req.body.team)
     })
+    .then(() => res.sendStatus(204))
+    .catch(next)
 })
 
 module.exports = router

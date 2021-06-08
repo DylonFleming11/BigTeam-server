@@ -17,15 +17,15 @@ const requireOwnership = customErrors.requireOwnership
 // const removeBlanks = require('../../lib/remove_blank_fields')
 
 // create team
-router.post('/team', requireToken, (req, res, next) => {
-  req.body.team.owner = req.user._id
+router.post('/teams', requireToken, (req, res, next) => {
+  req.body.team.owner = req.user.id
   Team.create(req.body.team)
     .then(events => res.status(201).json(events))
     .catch(next)
 })
 
 // delete/destroy team
-router.delete('/team/:id', requireToken, (req, res, next) => {
+router.delete('/teams/:id', requireToken, (req, res, next) => {
   const id = req.params.id
   Team.findById(id)
     .then(handle404)
@@ -40,7 +40,7 @@ router.delete('/team/:id', requireToken, (req, res, next) => {
 })
 
 // index team
-router.get('/team', requireToken, (req, res, next) => {
+router.get('/teams', requireToken, (req, res, next) => {
   Team.find({ owner: req.user.id })
     .populate('owner')
     .then(team => res.status(201).json(team))
@@ -48,7 +48,7 @@ router.get('/team', requireToken, (req, res, next) => {
 })
 
 // show team
-router.get('/team/:id', requireToken, (req, res, next) => {
+router.get('/teams/:id', requireToken, (req, res, next) => {
   Team.findById(req.params.id)
     .then(handle404)
     .then(team => requireOwnership(req, team))
@@ -57,7 +57,7 @@ router.get('/team/:id', requireToken, (req, res, next) => {
 })
 
 // patch/update team
-router.patch('/team/:id', requireToken, (req, res, next) => {
+router.patch('/teams/:id', requireToken, (req, res, next) => {
   // IMPORTANT! We need to remove the owner, to protect the data.
   delete req.body.team.owner
   // const teamId = req.params.id
